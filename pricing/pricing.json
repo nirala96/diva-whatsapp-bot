@@ -1,0 +1,47 @@
+{
+  "description": "Pricing structure for Diva Daulti products - to be used for future price negotiation logic",
+  "categories": {
+    "sarees": {
+      "min_price": 2500,
+      "max_price": 15000,
+      "avg_price": 6000,
+      "negotiation_floor": 0.85
+    },
+    "lehengas": {
+      "min_price": 8000,
+      "max_price": 50000,
+      "avg_price": 20000,
+      "negotiation_floor": 0.90
+    },
+    "suits": {
+      "min_price": 2000,
+      "max_price": 12000,
+      "avg_price": 5000,
+      "negotiation_floor": 0.85
+    },
+    "kurtis": {
+      "min_price": 800,
+      "max_price": 3500,
+      "avg_price": 1500,
+      "negotiation_floor": 0.80
+    },
+    "dupattas": {
+      "min_price": 500,
+      "max_price": 3000,
+      "avg_price": 1200,
+      "negotiation_floor": 0.75
+    },
+    "gowns": {
+      "min_price": 5000,
+      "max_price": 30000,
+      "avg_price": 12000,
+      "negotiation_floor": 0.90
+    }
+  },
+  "notes": [
+    "negotiation_floor represents the minimum percentage of the price that can be offered",
+    "For example, 0.85 means the minimum acceptable price is 85% of the listed price",
+    "Custom orders may have different pricing structures",
+    "Bulk orders (3+ pieces) may qualify for additional discounts"
+  ]
+}
