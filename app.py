@@ -195,13 +195,17 @@ Please respond to this customer soon!
 
 @app.get("/")
 async def root():
-    """Health check endpoint"""
+    """Root endpoint - Health check"""
+    openai_configured = bool(os.getenv("OPENAI_API_KEY"))
+    twilio_configured = bool(TWILIO_ACCOUNT_SID and TWILIO_AUTH_TOKEN)
+    
     return {
         "status": "running",
         "service": "Diva Daulti AI WhatsApp Chatbot",
         "version": "2.0.0",
         "features": ["whatsapp", "image_analysis", "pricing", "negotiation", "escalation"],
-        "twilio_configured": twilio_client is not None
+        "openai_configured": openai_configured,
+        "twilio_configured": twilio_configured
     }
 
 
@@ -321,7 +325,9 @@ async def whatsapp_webhook(request: Request):
         return str(resp)
         
     except Exception as e:
+        import traceback
         print(f"Error in WhatsApp webhook: {str(e)}")
+        print(f"Full traceback: {traceback.format_exc()}")
         resp = MessagingResponse()
         resp.message("Sorry, I'm having trouble right now. Please try again in a moment!")
         return str(resp)
