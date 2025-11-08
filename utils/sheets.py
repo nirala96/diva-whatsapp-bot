@@ -5,7 +5,7 @@ Handles authentication and data logging to Google Sheets for conversation tracki
 
 import os
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -52,9 +52,9 @@ def get_worksheet():
             raise FileNotFoundError(f"Service account file not found: {service_account_file}")
         
         # Authenticate using service account credentials
-        credentials = ServiceAccountCredentials.from_json_keyfile_name(
+        credentials = Credentials.from_service_account_file(
             service_account_file,
-            SCOPE
+            scopes=SCOPE
         )
         
         # Authorize the client
