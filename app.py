@@ -8,6 +8,7 @@ import json
 from datetime import datetime
 from typing import Optional, List
 from fastapi import FastAPI, HTTPException, Form, Request
+from fastapi.responses import Response
 from pydantic import BaseModel
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -322,7 +323,7 @@ async def whatsapp_webhook(request: Request):
         if result.needs_escalation:
             resp.message(f"\n\n✨ I've notified my team about your request. Someone will get back to you soon!")
         
-        return str(resp)
+        return Response(content=str(resp), media_type="application/xml")
         
     except Exception as e:
         import traceback
@@ -330,7 +331,7 @@ async def whatsapp_webhook(request: Request):
         print(f"Full traceback: {traceback.format_exc()}")
         resp = MessagingResponse()
         resp.message("Sorry, I'm having trouble right now. Please try again in a moment!")
-        return str(resp)
+        return Response(content=str(resp), media_type="application/xml")
 
 
 @app.post("/test-chat")
