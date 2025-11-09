@@ -272,19 +272,19 @@ async def webhook(chat_message: ChatMessage):
         add_to_conversation(user, "user", message)
         add_to_conversation(user, "assistant", clean_reply)
         
-        # Log to Google Sheets
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        try:
-            append_row([
-                timestamp, 
-                user, 
-                message, 
-                clean_reply,
-                "Yes" if needs_escalation else "No",
-                escalation_reason or ""
-            ])
-        except Exception as sheet_error:
-            print(f"Warning: Failed to log to Google Sheets: {sheet_error}")
+        # Log to Google Sheets (optional - disabled if not configured)
+        # timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        # try:
+        #     append_row([
+        #         timestamp, 
+        #         user, 
+        #         message, 
+        #         clean_reply,
+        #         "Yes" if needs_escalation else "No",
+        #         escalation_reason or ""
+        #     ])
+        # except Exception as sheet_error:
+        #     print(f"Warning: Failed to log to Google Sheets: {sheet_error}")
         
         # Send admin notification if escalation needed
         if needs_escalation:
@@ -322,12 +322,16 @@ async def whatsapp_webhook(request: Request):
         
         # Extract message details
         user = form_data.get("From", "").replace("whatsapp:", "")
-        message = form_data.get("Body", "")
+        message = form_data.get("Body", "").strip()
         media_url = form_data.get("MediaUrl0")
         
-        # Validate we have the minimum required data
-        if not user or not message:
-            print(f"❌ Missing required fields - From: {user}, Body: {message}")
+        # Handle image-only messages
+        if not message and media_url:
+            message = "What do you think about this outfit? Can you provide details and pricing?"
+        
+        # Validate we have the minimum required data (user and either message or image)
+        if not user or (not message and not media_url):
+            print(f"❌ Missing required fields - From: {user}, Body: {message}, MediaUrl: {media_url}")
             resp = MessagingResponse()
             resp.message("Sorry, I couldn't process your message. Please try again!")
             return Response(content=str(resp), media_type="application/xml")
