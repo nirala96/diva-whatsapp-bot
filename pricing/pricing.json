@@ -1,47 +1,64 @@
 {
-  "description": "Pricing structure for Diva Daulti products - to be used for future price negotiation logic",
-  "categories": {
-    "sarees": {
-      "min_price": 2500,
-      "max_price": 15000,
-      "avg_price": 6000,
-      "negotiation_floor": 0.85
+  "description": "Diva Daulti Custom Manufacturing Pricing Structure",
+  "pricing_model": {
+    "sampling": {
+      "description": "First piece sampling - pattern making, cutting, and stitching",
+      "timeline": "1 week",
+      "process": "Pattern making + Cutting + Sourcing + First piece stitching",
+      "pricing": {
+        "standard_dress": {
+          "base_price": 3000,
+          "fabric_cost": "additional",
+          "note": "For coord sets, dresses, suits - standard complexity"
+        },
+        "simple_pant": {
+          "base_price": 2500,
+          "fabric_cost": "additional",
+          "note": "Less effort required"
+        },
+        "complex_design": {
+          "base_price": "3500-5000",
+          "fabric_cost": "additional",
+          "note": "Pattern charges increase based on design complexity and silhouettes"
+        }
+      },
+      "minimum_negotiation": 3000,
+      "note": "Cannot go below ₹3000 for first piece sampling"
     },
-    "lehengas": {
-      "min_price": 8000,
-      "max_price": 50000,
-      "avg_price": 20000,
-      "negotiation_floor": 0.90
+    "production": {
+      "10_pieces": {
+        "price_per_piece": 1000,
+        "fabric_cost": "additional",
+        "note": "Small batch production"
+      },
+      "50_pieces": {
+        "price_per_piece": 500,
+        "fabric_cost": "additional",
+        "note": "Bulk production - fabric rates are lower in bulk"
+      },
+      "note": "More pieces = better rates. Bulk fabric rates reduce overall cost"
     },
-    "suits": {
-      "min_price": 2000,
-      "max_price": 12000,
-      "avg_price": 5000,
-      "negotiation_floor": 0.85
-    },
-    "kurtis": {
-      "min_price": 800,
-      "max_price": 3500,
-      "avg_price": 1500,
-      "negotiation_floor": 0.80
-    },
-    "dupattas": {
-      "min_price": 500,
-      "max_price": 3000,
-      "avg_price": 1200,
-      "negotiation_floor": 0.75
-    },
-    "gowns": {
-      "min_price": 5000,
-      "max_price": 30000,
-      "avg_price": 12000,
-      "negotiation_floor": 0.90
+    "additional_costs": {
+      "different_sizes": {
+        "cost": 300,
+        "note": "One-time pattern cost per different size",
+        "frequency": "One-time charge"
+      },
+      "delivery": {
+        "responsibility": "client",
+        "note": "Delivery charges to be borne by the client"
+      }
     }
   },
-  "notes": [
-    "negotiation_floor represents the minimum percentage of the price that can be offered",
-    "For example, 0.85 means the minimum acceptable price is 85% of the listed price",
-    "Custom orders may have different pricing structures",
-    "Bulk orders (3+ pieces) may qualify for additional discounts"
-  ]
+  "fabric_policy": {
+    "client_provides": "No fabric cost, only manufacturing charges",
+    "we_provide": "Manufacturing charges + Fabric cost + Logistics cost"
+  },
+  "example_pricing": {
+    "coord_set": {
+      "sampling": "₹4000 + fabric cost",
+      "10_pieces": "₹1000/piece + fabric cost",
+      "50_pieces": "₹500/piece + fabric cost"
+    }
+  }
 }
