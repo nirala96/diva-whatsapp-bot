@@ -38,6 +38,37 @@
       },
       "note": "More pieces = better rates. Bulk fabric rates reduce overall cost"
     },
+    "embroidery": {
+      "rate": "₹200 per hour",
+      "types": ["machine embroidery", "hand embroidery"],
+      "estimation_process": "We provide a general time estimate, but final charges are based on actual time taken by the karigaar (craftsman) after completing the work",
+      "note": "Time estimates are approximate. Actual billing is done after the karigaar completes the work and confirms the exact hours"
+    },
+    "block_printing": {
+      "block_making": {
+        "cost": 1000,
+        "description": "Craftsman carves wooden block for unique designs",
+        "responsibility": "Customer bears block making cost",
+        "note": "One-time cost if it's a unique design"
+      },
+      "printing_cost": {
+        "sample_small_batch": "₹200 per meter (less than 5 meters)",
+        "production": "To be confirmed based on quantity",
+        "note": "For sampling or small batches under 5 meters"
+      }
+    },
+    "eco_print": {
+      "eco_print": {
+        "rate": "₹350 per meter",
+        "fabric_cost": "additional",
+        "description": "Natural eco-printing process"
+      },
+      "natural_dye": {
+        "rate": "₹200 per meter",
+        "fabric_cost": "additional",
+        "description": "Natural dyeing process"
+      }
+    },
     "additional_costs": {
       "different_sizes": {
         "cost": 300,
@@ -54,11 +85,20 @@
     "client_provides": "No fabric cost, only manufacturing charges",
     "we_provide": "Manufacturing charges + Fabric cost + Logistics cost"
   },
+  "product_types": {
+    "western_wear": "All types of western wear available",
+    "traditional_wear": "Indian ethnic wear, sarees, suits, lehengas, etc.",
+    "custom_designs": "Any custom design can be manufactured"
+  },
   "example_pricing": {
     "coord_set": {
       "sampling": "₹4000 + fabric cost",
       "10_pieces": "₹1000/piece + fabric cost",
       "50_pieces": "₹500/piece + fabric cost"
+    },
+    "dress_with_embroidery": {
+      "sampling": "₹3500 + fabric cost + embroidery (₹200/hour)",
+      "note": "Embroidery time estimated initially, final charge after karigaar completes work"
     }
   }
 }
