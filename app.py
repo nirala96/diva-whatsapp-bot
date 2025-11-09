@@ -5,6 +5,7 @@ Main FastAPI application with WhatsApp integration, image analysis, pricing, and
 
 import os
 import json
+import base64
 from datetime import datetime
 from typing import Optional, List
 from fastapi import FastAPI, HTTPException, Form, Request
@@ -12,6 +13,7 @@ from fastapi.responses import Response
 from pydantic import BaseModel
 from openai import OpenAI
 from dotenv import load_dotenv
+import requests
 
 try:
     from twilio.rest import Client
@@ -105,21 +107,36 @@ class ChatResponse(BaseModel):
 def analyze_image_with_gpt(image_url: str, user_message: str) -> str:
     """Analyze an image using GPT-4 Vision API."""
     try:
+        # Check if this is a Twilio URL that needs authentication
+        if "twilio.com" in image_url:
+            # Download the image from Twilio with authentication
+            auth = (TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+            response = requests.get(image_url, auth=auth)
+            response.raise_for_status()
+            
+            # Convert to base64 for OpenAI
+            image_data = base64.b64encode(response.content).decode('utf-8')
+            content_type = response.headers.get('Content-Type', 'image/jpeg')
+            image_url_to_use = f"data:{content_type};base64,{image_data}"
+        else:
+            image_url_to_use = image_url
+        
         response = openai_client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4o",  # Changed to gpt-4o for better vision capabilities
             messages=[
                 {
                     "role": "system",
                     "content": """You are Aisha from Diva Daulti analyzing outfit images. 
                     Describe the outfit professionally, identify the type (saree/lehenga/suit/etc.),
                     comment on the fabric, color, design, and suggest appropriate occasions.
-                    If asked about pricing, provide an estimate based on the category and quality you see."""
+                    If asked about pricing, provide an estimate based on the category and quality you see.
+                    Be specific about what you see in the image."""
                 },
                 {
                     "role": "user",
                     "content": [
                         {"type": "text", "text": user_message},
-                        {"type": "image_url", "image_url": {"url": image_url}}
+                        {"type": "image_url", "image_url": {"url": image_url_to_use}}
                     ]
                 }
             ],
@@ -128,6 +145,8 @@ def analyze_image_with_gpt(image_url: str, user_message: str) -> str:
         return response.choices[0].message.content.strip()
     except Exception as e:
         print(f"Error analyzing image: {e}")
+        import traceback
+        print(f"Full traceback: {traceback.format_exc()}")
         return "I'm having trouble viewing the image right now. Could you describe what you're looking for?"
 
 
