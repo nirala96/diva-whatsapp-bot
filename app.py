@@ -298,10 +298,20 @@ async def whatsapp_webhook(request: Request):
     try:
         form_data = await request.form()
         
+        # Debug: print all form data
+        print(f"📥 Received form data: {dict(form_data)}")
+        
         # Extract message details
         user = form_data.get("From", "").replace("whatsapp:", "")
         message = form_data.get("Body", "")
         media_url = form_data.get("MediaUrl0")
+        
+        # Validate we have the minimum required data
+        if not user or not message:
+            print(f"❌ Missing required fields - From: {user}, Body: {message}")
+            resp = MessagingResponse()
+            resp.message("Sorry, I couldn't process your message. Please try again!")
+            return Response(content=str(resp), media_type="application/xml")
         
         print(f"📱 WhatsApp message from {user}: {message}")
         if media_url:
